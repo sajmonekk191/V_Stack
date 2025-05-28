@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V Stack – Ultimátní Zážitek</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* style.css */
+
+/* --- CONFIGURATION & THEME VARIABLES --- */
+:root {
+    /* Font Stacks */
+    --font-primary: 'Montserrat', sans-serif;
+    --font-secondary: 'Roboto Condensed', sans-serif;
+    --font-headings: 'Montserrat', sans-serif; /* Using Montserrat for headings too, but with heavier weights */
+
+    /* Core Color Palette - Light & Bright */
+    --color-background: #f4f7f9; /* Velmi světle šedá / off-white */
+    --color-surface: #ffffff; /* Bílá pro karty a povrchy */
+    --color-text-primary: #2c3e50; /* Tmavě šedo-modrá pro text */
+    --color-text-secondary: #566573; /* Středně šedá pro doplňkový text */
+    --color-border: #e0e5ea; /* Světle šedá pro okraje */
+    --color-shadow: rgba(44, 62, 80, 0.15); /* Jemný stín */
+    --color-shadow-strong: rgba(44, 62, 80, 0.25);
+
+    /* Accent Colors (per capsule) */
+    /* Kapsle 1 - PEA RUSH (Vibrant Blue) */
+    --c1-accent: #007bff;
+    --c1-gradient-start: #007bff;
+    --c1-gradient-end: #0056b3;
+    --c1-shadow-glow: rgba(0, 123, 255, 0.4);
+    --c1-palette: #0d6efd, #3da9fc, #66bfff, #99d6ff, #cce8ff;
+
+    /* Kapsle 2 - SEROTONIN EXTÁZE (Warm Pink/Purple) */
+    --c2-accent: #8a2be2; /* BlueViolet */
+    --c2-gradient-start: #8a2be2;
+    --c2-gradient-end: #6a1a9a;
+    --c2-shadow-glow: rgba(138, 43, 226, 0.4);
+    --c2-palette: #7b1fa2, #9c27b0, #ba68c8, #ce93d8, #e1bee7;
+
+
+    /* Kapsle 3 - HARD FOCUS (Bright Orange) */
+    --c3-accent: #fd7e14;
+    --c3-gradient-start: #fd7e14;
+    --c3-gradient-end: #c7640f;
+    --c3-shadow-glow: rgba(253, 126, 20, 0.4);
+    --c3-palette: #f57c00, #ffa726, #ffb74d, #ffcc80, #ffe0b2;
+
+    /* Kapsle 4 - EXTENDER (Cool Teal) */
+    --c4-accent: #20c997;
+    --c4-gradient-start: #20c997;
+    --c4-gradient-end: #158765;
+    --c4-shadow-glow: rgba(32, 201, 151, 0.4);
+    --c4-palette: #00897b, #26a69a, #4db6ac, #80cbc4, #b2dfdb;
+
+    /* General Accents */
+    --accent-warning: #dc3545;
+    --accent-success: #28a745;
+    --accent-info: #17a2b8;
+
+    /* Spacing & Sizing */
+    --spacing-unit: 8px;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 16px;
+    --transition-duration: 0.3s;
+    --transition-timing: ease-in-out;
+
+    /* Z-Indexes */
+    --z-tooltip: 1000;
+    --z-header: 100;
+    --z-modal: 500; /* If modals were used */
+    --z-dropdown: 200; /* If dropdowns were used */
+}
+
+/* --- GLOBAL RESETS & BASE STYLES --- */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape */
+}
+
+body {
+    font-family: var(--font-primary);
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: relative;
+}
+
+.page-background { /* Subtle gradient or pattern background */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: linear-gradient(135deg, var(--color-background) 0%, #e9edf1 100%);
+    /* Optional: Add a very subtle noise texture */
+    /* background-image: url('data:image/svg+xml,...'); */
+}
+
+.container {
+    width: 90%;
+    max-width: 1300px; /* Increased max-width for more space */
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: calc(var(--spacing-unit) * 2);
+    padding-right: calc(var(--spacing-unit) * 2);
+}
+
+/* --- TYPOGRAPHY --- */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-headings);
+    font-weight: 700; /* Bolder headings */
+    line-height: 1.3;
+    margin-bottom: calc(var(--spacing-unit) * 2);
+    color: var(--color-text-primary);
+}
+
+h1 {
+    font-size: clamp(1.8rem, 4vw, 3.5rem); /* Larger H1 */
+    font-weight: 900; /* Extra bold for main title */
+    letter-spacing: -1px;
+    color: var(--color-surface); /* White text on dark header */
+    text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.subtitle {
+    font-family: var(--font-secondary);
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    font-weight: 400;
+    color: rgba(255,255,255,0.85); /* Lighter subtitle on dark header */
+    margin-bottom: calc(var(--spacing-unit) * 3);
+    letter-spacing: 0.5px;
+}
+
+.intro-text {
+    font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+    color: rgba(255,255,255,0.9);
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+.section-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 900; /* Very bold section titles */
+    text-align: center;
+    margin-bottom: calc(var(--spacing-unit) * 6); /* More space after title */
+    position: relative;
+    padding-bottom: calc(var(--spacing-unit) * 2);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.section-title span { /* For the underline effect */
+    position: relative;
+    display: inline-block;
+    padding: 0 10px; /* Give text some breathing room from underline */
+}
+
+.section-title span::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -10px;
+    width: 80px; /* Width of underline */
+    height: 4px;
+    border-radius: 2px;
+    background-image: linear-gradient(to right, var(--c1-accent), var(--c2-accent), var(--c3-accent), var(--c4-accent));
+    /* Example: Gradient using capsule accents, or a single primary accent */
+}
+/* Warning title specific underline */
+.warning-title span::after {
+    background-image: linear-gradient(to right, var(--accent-warning), color-mix(in srgb, var(--accent-warning) 60%, var(--c3-accent)));
+}
+
+p {
+    margin-bottom: calc(var(--spacing-unit) * 2);
+    color: var(--color-text-secondary);
+}
+a {
+    color: var(--c1-accent); /* Default link color to first capsule accent */
+    text-decoration: none;
+    font-weight: 600;
+    transition: color var(--transition-duration) var(--transition-timing),
+                opacity var(--transition-duration) var(--transition-timing);
+}
+a:hover, a:focus {
+    color: var(--c2-accent); /* Change on hover */
+    opacity: 0.8;
+    text-decoration: underline;
+}
+
+strong {
+    font-weight: 700;
+    color: var(--color-text-primary);
+}
+
+/* --- HEADER STYLING --- */
+.site-header {
+    padding: calc(var(--spacing-unit) * 8) 0 calc(var(--spacing-unit) * 10); /* More padding */
+    position: relative;
+    text-align: center;
+    background-color: #1f2023; /* Dark base for header */
+    overflow: hidden; /* For pseudo elements */
+}
+.header-overlay { /* Subtle pattern or gradient overlay */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(rgba(20,20,30,0.5), rgba(30,30,50,0.8)),
+        url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100"><path d="M0 50 L50 0 L100 50 L50 100 Z" fill="rgba(255,255,255,0.02)"/></svg>'); /* Subtle geometric pattern */
+    background-size: auto, 50px 50px;
+    opacity: 0.8;
+    z-index: 0;
+}
+.header-container {
+    position: relative;
+    z-index: 1;
+}
+
+/* --- MAIN CONTENT AREA --- */
+.site-main {
+    padding: calc(var(--spacing-unit) * 6) 0;
+}
+.content-section {
+    background-color: transparent; /* Sections are on page background */
+    padding: calc(var(--spacing-unit) * 3) 0; /* Vertical padding for sections */
+    margin-bottom: calc(var(--spacing-unit) * 8);
+    border-radius: var(--radius-lg);
+    /* No shadow by default, cards will have shadows */
+}
+.content-section:last-child {
+    margin-bottom: 0;
+}
+
+/* --- CAPSULE CARD STYLING --- */
+.capsule-card {
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 10px 30px var(--color-shadow);
+    margin-bottom: calc(var(--spacing-unit) * 6);
+    overflow: hidden;
+    transition: transform var(--transition-duration) var(--transition-timing),
+                box-shadow var(--transition-duration) var(--transition-timing);
+    display: flex; /* Changed to flex for side-by-side layout */
+    flex-direction: row; /* Main info and details side-by-side */
+    padding: calc(var(--spacing-unit) * 3); /* Padding inside the card */
+    gap: calc(var(--spacing-unit) * 3);
+    border-top: 5px solid; /* Accent border at the top */
+}
+
+.capsule-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 45px var(--color-shadow-strong);
+}
+
+/* Assign top border colors dynamically via JS or specific CSS variables */
+#capsule1-card { border-color: var(--c1-accent); }
+#capsule2-card { border-color: var(--c2-accent); }
+#capsule3-card { border-color: var(--c3-accent); }
+#capsule4-card { border-color: var(--c4-accent); }
+
+.capsule-main-info {
+    flex: 0 0 45%; /* Visualization and legend take up ~45% width */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center capsule visualization */
+}
+.capsule-details {
+    flex: 1 1 55%; /* Table and effects take remaining width */
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing-unit) * 2);
+}
+
+.capsule-title-area {
+    text-align: center;
+    margin-bottom: calc(var(--spacing-unit) * 3);
+    width: 100%;
+}
+.capsule-title-area h3 {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 700; /* Bold capsule titles */
+    margin-bottom: var(--spacing-unit);
+    /* Dynamic color for capsule titles */
+}
+#capsule1-card .capsule-title-area h3 { color: var(--c1-accent); }
+#capsule2-card .capsule-title-area h3 { color: var(--c2-accent); }
+#capsule3-card .capsule-title-area h3 { color: var(--c3-accent); }
+#capsule4-card .capsule-title-area h3 { color: var(--c4-accent); }
+
+.capsule-focus {
+    font-family: var(--font-secondary);
+    font-size: clamp(1rem, 1.8vw, 1.2rem);
+    color: var(--color-text-secondary);
+    font-style: italic;
+}
+
+
+/* --- NEW CAPSULE VISUALIZATION & LEGEND --- */
+.capsule-visualization-wrapper {
+    display: flex;
+    flex-direction: column; /* Capsule above legend */
+    align-items: center;
+    gap: calc(var(--spacing-unit) * 3);
+    width: 100%;
+    max-width: 300px; /* Control max width */
+    margin: 0 auto; /* Center in its container */
+}
+
+.capsule-graphic {
+    width: 80px; /* Width of the vertical capsule */
+    height: 280px; /* Height of the capsule */
+    border-radius: 40px; /* Pill shape */
+    background-color: #e9ecef; /* Light grey base for the capsule shell */
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.15), /* Inner shadow for depth */
+                0 5px 15px rgba(0,0,0,0.1);  /* Outer subtle shadow */
+    display: flex;
+    flex-direction: column; /* Segments stack vertically */
+    overflow: hidden; /* Clip segments to pill shape */
+    position: relative;
+    border: 3px solid var(--color-surface); /* White border to lift it */
+}
+.capsule-graphic::before { /* Glossy highlight */
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    right: 10px;
+    height: 60%;
+    border-radius: 30px 30px 100px 100px / 20px 20px 120px 120px; /* Complex curve */
+    background: linear-gradient(to bottom, 
+        rgba(255,255,255,0.8) 0%, 
+        rgba(255,255,255,0.3) 30%, 
+        rgba(255,255,255,0.0) 70%);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.ingredient-segment {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden; /* For internal patterns or textures */
+    transition: filter var(--transition-duration) var(--transition-timing),
+                transform var(--transition-duration) var(--transition-timing);
+    cursor: help; /* Indicate more info on hover (tooltip) */
+    z-index: 1;
+}
+.ingredient-segment:hover {
+    filter: brightness(1.1);
+    transform: scale(1.02); /* Slight zoom on hover */
+}
+.ingredient-segment:not(:last-child)::after { /* Separator line, more subtle */
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background-color: rgba(0,0,0,0.1);
+}
+
+.ingredient-legend {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing-unit) * 1);
+}
+.ingredient-legend li {
+    display: flex;
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    padding: calc(var(--spacing-unit) * 0.5) 0;
+    cursor: default;
+}
+.legend-color-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: calc(var(--spacing-unit) * 1.5);
+    border: 1px solid rgba(0,0,0,0.1);
+    flex-shrink: 0;
+}
+.legend-ingredient-name {
+    flex-grow: 1;
+}
+.legend-arrow { /* "Arrow" pointing towards capsule (symbolic) */
+    font-size: 1.2rem;
+    margin-left: var(--spacing-unit);
+    opacity: 0.7;
+    transition: transform var(--transition-duration) var(--transition-timing);
+}
+.ingredient-legend li:hover .legend-arrow {
+    transform: translateX(3px); /* Slight movement on hover */
+}
+
+
+/* --- TABLE STYLING --- */
+.ingredient-table-container {
+    background-color: #f8f9fa; /* Slightly off-white for table background */
+    border-radius: var(--radius-md);
+    padding: var(--spacing-unit) * 1.5;
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.05);
+    overflow-x: auto; /* Responsive tables */
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+table th, table td {
+    padding: calc(var(--spacing-unit) * 1.5) var(--spacing-unit); /* Adjusted padding */
+    text-align: left;
+    border-bottom: 1px solid var(--color-border);
+    font-size: 0.9rem;
+}
+table th {
+    font-family: var(--font-secondary);
+    font-weight: 700; /* Bolder table headers */
+    color: var(--color-text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background-color: transparent;
+}
+table td span { /* Notes in table cells */
+    display: block;
+    font-size: 0.8em;
+    color: #777;
+    margin-top: 2px;
+}
+table tr:last-child td {
+    border-bottom: none;
+}
+table tr:hover td {
+    background-color: color-mix(in srgb, var(--color-surface) 90%, var(--c1-accent) 10%); /* Subtle hover, adapt accent */
+}
+
+/* --- EFFECTS BOX --- */
+.effects-box {
+    padding: calc(var(--spacing-unit) * 2);
+    border-radius: var(--radius-md);
+    margin-top: calc(var(--spacing-unit) * 2); /* Space from table */
+    border: 1px solid; /* Dynamic border color */
+    background-color: color-mix(in srgb, var(--color-surface) 95%, var(--current-capsule-accent, transparent) 5%);
+}
+.effects-box h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-unit);
+    color: var(--current-capsule-accent, var(--color-text-primary)); /* Dynamic color */
+}
+.effects-box p {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 0;
+}
+/* Dynamic accent for effects box based on parent card */
+#capsule1-card .effects-box { --current-capsule-accent: var(--c1-accent); border-color: var(--c1-accent); }
+#capsule2-card .effects-box { --current-capsule-accent: var(--c2-accent); border-color: var(--c2-accent); }
+#capsule3-card .effects-box { --current-capsule-accent: var(--c3-accent); border-color: var(--c3-accent); }
+#capsule4-card .effects-box { --current-capsule-accent: var(--c4-accent); border-color: var(--c4-accent); }
+
+/* --- TIMELINE SECTION --- */
+.timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: calc(var(--spacing-unit) * 2) 0;
+}
+.timeline::before { /* Central timeline bar */
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background-color: var(--color-border);
+    border-radius: 2px;
+}
+.timeline-item {
+    padding: var(--spacing-unit) calc(var(--spacing-unit) * 5); /* Padding around items */
+    position: relative;
+    margin-bottom: calc(var(--spacing-unit) * 3);
+    width: 50%; /* Each item takes half width */
+    background-color: var(--color-surface);
+    border-radius: var(--radius-md);
+    box-shadow: 0 5px 15px var(--color-shadow);
+    border-left: 4px solid; /* Accent border */
+}
+/* Alternating sides */
+.timeline-item:nth-child(odd) {
+    left: 0;
+    border-left-color: var(--c1-accent); /* Example accent */
+}
+.timeline-item:nth-child(even) {
+    left: 50%;
+    border-left-color: var(--c3-accent); /* Example accent */
+}
+.timeline-item::after { /* Dot on the timeline bar */
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--color-surface);
+    border: 4px solid; /* Matches item accent */
+    top: calc(50% - 8px); /* Center dot vertically */
+    z-index: 1;
+}
+.timeline-item:nth-child(odd)::after {
+    right: -calc(var(--spacing-unit) * 5 + 8px); /* Position dot */
+    border-color: var(--c1-accent);
+}
+.timeline-item:nth-child(even)::after {
+    left: -calc(var(--spacing-unit) * 5 + 8px); /* Position dot */
+    border-color: var(--c3-accent);
+}
+.timeline-time {
+    font-family: var(--font-secondary);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-unit);
+}
+.timeline-effect {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+}
+
+/* --- SAFETY GUIDELINES --- */
+.safety-guidelines {
+    list-style: none;
+    padding: 0;
+    max-width: 900px; /* Control width of safety list */
+    margin: 0 auto;
+}
+.safety-guidelines li {
+    background-color: color-mix(in srgb, var(--color-surface) 90%, var(--accent-warning) 10%); /* Light warning bg */
+    padding: calc(var(--spacing-unit) * 2);
+    margin-bottom: calc(var(--spacing-unit) * 2);
+    border-radius: var(--radius-md);
+    border-left: 5px solid var(--accent-warning);
+    box-shadow: 0 3px 10px color-mix(in srgb, var(--accent-warning) 20%, transparent);
+    font-size: 1rem;
+    position: relative; /* For pseudo-element icon */
+    padding-left: calc(var(--spacing-unit) * 5); /* Space for icon */
+}
+.safety-guidelines li::before { /* Custom icon */
+    content: '❗'; /* Or an SVG icon */
+    position: absolute;
+    left: calc(var(--spacing-unit) * 1.5);
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    color: var(--accent-warning);
+}
+.safety-guidelines li strong {
+    color: var(--accent-warning);
+    font-weight: 700;
+}
+
+/* --- FOOTER --- */
+.site-footer {
+    background-color: #22252a; /* Dark footer */
+    color: #a0a7af; /* Lighter text for dark footer */
+    padding: calc(var(--spacing-unit) * 5) 0;
+    text-align: center;
+    margin-top: calc(var(--spacing-unit) * 8);
+    font-size: 0.85rem;
+    border-top: 3px solid var(--color-border);
+}
+.site-footer p {
+    margin-bottom: var(--spacing-unit);
+    color: #a0a7af;
+}
+.site-footer p:last-child {
+    margin-bottom: 0;
+}
+.design-credit {
+    font-style: italic;
+    opacity: 0.7;
+}
+
+/* --- TOOLTIP (MASTER) --- */
+.tooltip {
+    position: fixed; /* Fixed position relative to viewport */
+    background-color: rgba(40, 40, 50, 0.95); /* Dark, slightly transparent */
+    color: #fff;
+    padding: var(--spacing-unit) calc(var(--spacing-unit) * 1.5);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.4;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity var(--transition-duration) var(--transition-timing), 
+                transform var(--transition-duration) var(--transition-timing);
+    z-index: var(--z-tooltip);
+    pointer-events: none; /* Allow interaction with elements below */
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+    max-width: 250px; /* Prevent tooltip from being too wide */
+    border: 1px solid rgba(255,255,255,0.2);
+    transform: scale(0.95) translateY(5px); /* Initial state for animation */
+}
+.tooltip.visible {
+    visibility: visible;
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+
+
+/* --- ANIMATIONS & ENHANCEMENTS --- */
+@keyframes fadeInFromBottom {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.content-section, .capsule-card { /* General fade-in for sections and cards */
+    animation: fadeInFromBottom 0.6s var(--transition-timing) forwards;
+    opacity: 0; /* Start hidden for animation */
+}
+/* Stagger animations (can be done with JS for more control or more CSS classes) */
+.capsule-card:nth-child(1) { animation-delay: 0.1s; }
+.capsule-card:nth-child(2) { animation-delay: 0.25s; }
+.capsule-card:nth-child(3) { animation-delay: 0.4s; }
+.capsule-card:nth-child(4) { animation-delay: 0.55s; }
+#timeline-section { animation-delay: 0.65s; }
+#safety-section { animation-delay: 0.75s; }
+
+
+/* --- RESPONSIVE ADJUSTMENTS --- */
+@media (max-width: 1200px) {
+    .capsule-card {
+        flex-direction: column; /* Stack main info and details on smaller screens */
+        align-items: center; /* Center content when stacked */
+    }
+    .capsule-main-info, .capsule-details {
+        flex-basis: auto; /* Reset flex basis */
+        width: 100%;
+        max-width: 600px; /* Control width when stacked */
+    }
+    .capsule-visualization-wrapper {
+        max-width: 250px; /* Smaller capsule on smaller screens */
+    }
+    .capsule-graphic {
+        width: 70px;
+        height: 240px;
+        border-radius: 35px;
+    }
+}
+
+@media (max-width: 992px) {
+    .container {
+        width: 95%;
+    }
+    .timeline-item, .timeline-item:nth-child(even) {
+        width: 100%; /* Full width timeline items */
+        left: 0;
+        margin-left: calc(var(--spacing-unit) * 3); /* Offset from timeline bar */
+        padding-left: calc(var(--spacing-unit) * 2);
+    }
+    .timeline::before { /* Move bar to the left */
+        left: calc(var(--spacing-unit) * 1);
+        transform: none;
+    }
+    .timeline-item::after, .timeline-item:nth-child(even)::after { /* Adjust dot position */
+        left: -calc(var(--spacing-unit) * 3 + 8px);
+    }
+}
+
+@media (max-width: 768px) {
+    html { font-size: 15px; } /* Slightly smaller base font */
+    
+    h1 { font-size: clamp(2.2rem, 5vw, 3.5rem); }
+    .section-title { font-size: clamp(1.6rem, 3.5vw, 2.4rem); margin-bottom: calc(var(--spacing-unit) * 4); }
+    
+    .capsule-visualization-wrapper {
+        flex-direction: column; /* Stack capsule and legend */
+        align-items: center;
+    }
+    .capsule-graphic {
+        width: 60px;
+        height: 200px;
+        border-radius: 30px;
+    }
+    .ingredient-legend {
+        align-items: flex-start; /* Align legend items to left */
+        max-width: 100%; /* Allow legend to take full width if needed */
+    }
+    .ingredient-table-container {
+        padding: var(--spacing-unit);
+    }
+    table th, table td {
+        padding: var(--spacing-unit);
+        font-size: 0.85rem;
+    }
+    .effects-box { padding: var(--spacing-unit) * 1.5; }
+    .timeline-item { padding: var(--spacing-unit) * 1.5; }
+}
+
+@media (max-width: 480px) {
+    html { font-size: 14px; }
+    .site-header { padding: calc(var(--spacing-unit) * 5) 0 calc(var(--spacing-unit) * 6); }
+    h1 { letter-spacing: -0.5px; }
+    .subtitle { font-size: clamp(0.9rem, 2vw, 1.1rem); }
+    .intro-text { font-size: clamp(0.85rem, 1.5vw, 1rem); }
+    .section-title span::after { width: 60px; height: 3px; }
+
+    .capsule-title-area h3 { font-size: clamp(1.3rem, 2.5vw, 1.8rem); }
+    .capsule-focus { font-size: clamp(0.9rem, 1.5vw, 1rem); }
+
+    .safety-guidelines li {
+        font-size: 0.9rem;
+        padding: var(--spacing-unit) * 1.5;
+        padding-left: calc(var(--spacing-unit) * 4.5);
+    }
+     .safety-guidelines li::before {
+        font-size: 1.3rem;
+        left: var(--spacing-unit);
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="page-background"></div>
+
+    <header class="site-header">
+        <div class="header-overlay"></div>
+        <div class="container header-container">
+            <h1>💊 V3.2 (4 KAPSLE VERZE) 💊</h1>
+            <p class="intro-text">
+                Pečlivě sestaveno do 4 kapslí velikosti 000 (každá max ~1,4–1,5 g).<br>
+                Celkem ~5,5–6 g aktivního obsahu pro silný a bezpečný prožitek.
+            </p>
+        </div>
+    </header>
+
+    <main class="site-main">
+        <div class="container">
+            <section id="capsules-section" class="content-section">
+                <h2 class="section-title"><span>DEKONSTRUKCE STACKU</span></h2>
+
+                <article class="capsule-card" id="capsule1-card" data-capsule-id="0">
+                    <div class="capsule-main-info">
+                        <div class="capsule-title-area">
+                            <h3>Kapsle 1: Main kapsle</h3>
+                            <p class="capsule-focus">Hlavní kapsle pro základní učinek</p>
+                        </div>
+                        <div class="capsule-visualization-wrapper">
+                            <div class="capsule-graphic" id="graphic-capsule-0">
+                                </div>
+                            <ul class="ingredient-legend" id="legend-capsule-0">
+                                </ul>
+                        </div>
+                    </div>
+                    <div class="capsule-details">
+                        <div class="ingredient-table-container">
+                            <table>
+                                <thead><tr><th>Látka</th><th>Dávka</th></tr></thead>
+                                <tbody>
+                                    <tr><td>Phenylethylamin (PEA)</td><td>400 mg</td></tr>
+                                    <tr><td>Hordenin HCl <span>(MAO-B inhibitor)</span></td><td>150 mg</td></tr>
+                                    <tr><td>EGCG <span>(extrakt zeleného čaje)</span></td><td>300 mg</td></tr>
+                                    <tr><td>Mucuna Pruriens <span>(20% L-DOPA)</span></td><td>600 mg</td></tr>
+                                    <tr><td>Piperin <span>(pro absorpci)</span></td><td>10 mg</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="effects-box">
+                            <h4>Okamžitý Efekt:</h4>
+                            <p>Rychlý nástup euforie, zostřené smysly, intenzivní energie a drive po dobu 2–3 hodin.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="capsule-card" id="capsule2-card" data-capsule-id="1">
+                    <div class="capsule-main-info">
+                         <div class="capsule-title-area">
+                            <h3>Kapsle 2: Druhá vlna</h3>
+                            <p class="capsule-focus">Další potřebná kapsle pro správné fungování</p>
+                        </div>
+                        <div class="capsule-visualization-wrapper">
+                            <div class="capsule-graphic" id="graphic-capsule-1"></div>
+                            <ul class="ingredient-legend" id="legend-capsule-1"></ul>
+                        </div>
+                    </div>
+                    <div class="capsule-details">
+                        <div class="ingredient-table-container">
+                            <table>
+                                <thead><tr><th>Látka</th><th>Dávka</th></tr></thead>
+                                <tbody>
+                                    <tr><td>Kanna extrakt <span>(5–10 % mesembrin)</span></td><td>500 mg</td></tr>
+                                    <tr><td>Šafrán extrakt <span>(0,3 % safranal – Affron®)</span></td><td>30 mg</td></tr>
+                                    <tr><td>Mučenka <span>(10:1 extrakt)</span></td><td>300 mg</td></tr>
+                                    <tr><td>DL-Phenylalanin</td><td>750 mg</td></tr>
+                                    <tr><td>N-acetyl-L-tyrosin <span>(kognitivní jasnost)</span></td><td>300 mg</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="effects-box">
+                            <h4>Okamžitý Efekt:</h4>
+                            <p>Otevřené srdce, intenzivní smyslové vnímání, radost, touha po kontaktu a komunikaci.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="capsule-card" id="capsule3-card" data-capsule-id="2">
+                    <div class="capsule-main-info">
+                        <div class="capsule-title-area">
+                            <h3>Kapsle 3: Energická kapsle</h3>
+                            <p class="capsule-focus">Pro přidání maximální energie</p>
+                        </div>
+                        <div class="capsule-visualization-wrapper">
+                            <div class="capsule-graphic" id="graphic-capsule-2"></div>
+                            <ul class="ingredient-legend" id="legend-capsule-2"></ul>
+                        </div>
+                    </div>
+                    <div class="capsule-details">
+                        <div class="ingredient-table-container">
+                            <table>
+                                <thead><tr><th>Látka</th><th>Dávka</th></tr></thead>
+                                <tbody>
+                                    <tr><td>Theacrine <span>(Teacrine®)</span></td><td>200 mg</td></tr>
+                                    <tr><td>Kofein <span>(z guarany / čistý)</span></td><td>120 mg</td></tr>
+                                    <tr><td>Rhodiola rosea <span>(3% rosavin)</span></td><td>300 mg</td></tr>
+                                    <tr><td>CDP-Choline / Alpha GPC</td><td>300 mg</td></tr>
+                                    <tr><td>L-Theanin <span>(vyvážené flow)</span></td><td>200 mg</td></tr>
+				    <tr><td>1 % Huperzinu A</td><td>0–20 mg</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="effects-box">
+                            <h4>Okamžitý Efekt:</h4>
+                            <p>Extrémní soustředění, mentální výkonnost, plynulá energie bez propadů, "čistá mysl v chaosu".</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="capsule-card" id="capsule4-card" data-capsule-id="3">
+                    <div class="capsule-main-info">
+                        <div class="capsule-title-area">
+                            <h3>Kapsle 4: Kapsle na dojezdy</h3>
+                            <p class="capsule-focus">Prodloužení & Anti-Crash</p>
+                        </div>
+                        <div class="capsule-visualization-wrapper">
+                            <div class="capsule-graphic" id="graphic-capsule-3"></div>
+                            <ul class="ingredient-legend" id="legend-capsule-3"></ul>
+                        </div>
+                    </div>
+                    <div class="capsule-details">
+                        <div class="ingredient-table-container">
+                            <table>
+                                <thead><tr><th>Látka</th><th>Dávka</th></tr></thead>
+                                <tbody>
+                                    <tr><td>Taurin</td><td>1000 mg</td></tr>
+                                    <tr><td>L-Tyrosin <span>(regenerace dopaminu)</span></td><td>500 mg</td></tr>
+                                    <tr><td>DMAE <span>(nebo Centrophenoxin)</span></td><td>200 mg</td></tr>
+                                    <tr><td>Vitamín B6 (P-5-P)</td><td>20–50 mg</td></tr>
+                                    <tr><td>Magnesium bisglycinát <span>(relaxace)</span></td><td>250 mg</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="effects-box">
+                            <h4>Okamžitý Efekt:</h4>
+                            <p>Regenerace během zážitku, stabilizace dopaminu, prodloužení účinků, prevence tiků.</p>
+                        </div>
+                    </div>
+                </article>
+
+            </section>
+
+            <section id="timeline-section" class="content-section">
+                <h2 class="section-title"><span>🧠 ČASOVÁ OSA ZÁŽITKU</span></h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-time">0:30 h</div>
+                        <div class="timeline-effect">Začátek</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">0:45–2:45 h</div>
+                        <div class="timeline-effect">Vrchol</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">3:00–5:00 h</div>
+                        <div class="timeline-effect">Lehké doznívání</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">6:00–8:00 h</div>
+                        <div class="timeline-effect">Konec</div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="safety-section" class="content-section">
+                <h2 class="section-title warning-title"><span>🚨 BEZPEČNOST PŘEDEVŠÍM</span></h2>
+                <ul class="safety-guidelines">
+                    <li><strong>Absolutně NEKOMBINOVAT</strong> s MAOI, SSRI, jinými stimulanty nebo drogami!</li>
+                    <li>Užívat maximálně <strong>1× týdně</strong> – respektuj své tělo i mysl.</li>
+                    <li><strong>HYDRATACE</strong> je klíčová! Pij dostatek vody. Jez lehce několik hodin předem. Doplň elektrolyty.</li>
+                    <li><strong>NÁSLEDNÁ PÉČE (druhý den):</strong> Hořčík, tryptofan nebo 5-HTP, vitamín C, B-komplex pro optimální regeneraci.</li>
+                </ul>
+            </section>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2025 V STACK. Veškeré informace zde uvedené mají pouze informativní charakter. Tento produkt není určen k diagnostice, léčbě, vyléčení nebo prevenci jakékoli nemoci. Před použitím se poraďte s lékařem. Dodržujte zákony vaší země.</p>
+            <p class="design-credit">Made by skk</p>
+        </div>
+    </footer>
+    
+    <div class="tooltip" id="master-tooltip"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    const capsuleStore = [
+        {
+            // Kapsle 1
+            idPrefix: 'capsule-0',
+            accentVariable: '--c1-accent', // CSS variable for accent color
+            palette: ['var(--c1-palette-0)', 'var(--c1-palette-1)', 'var(--c1-palette-2)', 'var(--c1-palette-3)', 'var(--c1-palette-4)'], // Specific shades
+            totalDose: 1460,
+            ingredients: [
+                { name: 'Phenylethylamin (PEA)', shortName: 'PEA', dose: 400 },
+                { name: 'Hordenin HCl', shortName: 'Hordenin', dose: 150 },
+                { name: 'EGCG (zelený čaj)', shortName: 'EGCG', dose: 300 },
+                { name: 'Mucuna Pruriens (L-DOPA)', shortName: 'Mucuna', dose: 600 },
+                { name: 'Piperin', shortName: 'Piperin', dose: 10 }
+            ]
+        },
+        {
+            // Kapsle 2
+            idPrefix: 'capsule-1',
+            accentVariable: '--c2-accent',
+            palette: ['var(--c2-palette-0)', 'var(--c2-palette-1)', 'var(--c2-palette-2)', 'var(--c2-palette-3)', 'var(--c2-palette-4)'],
+            totalDose: 1880,
+            ingredients: [
+                { name: 'Kanna extrakt (mesembrin)', shortName: 'Kanna', dose: 500 },
+                { name: 'Šafrán extrakt (Affron®)', shortName: 'Šafrán', dose: 30 },
+                { name: 'Mučenka (10:1 extrakt)', shortName: 'Mučenka', dose: 300 },
+                { name: 'DL-Phenylalanin', shortName: 'DLPA', dose: 750 },
+                { name: 'N-acetyl-L-tyrosin', shortName: 'NALT', dose: 300 }
+            ]
+        },
+        {
+            // Kapsle 3
+            idPrefix: 'capsule-2',
+            accentVariable: '--c3-accent',
+            palette: ['var(--c3-palette-0)', 'var(--c3-palette-1)', 'var(--c3-palette-2)', 'var(--c3-palette-3)', 'var(--c3-palette-4)'],
+            totalDose: 1120,
+            ingredients: [
+                { name: 'Theacrine (Teacrine®)', shortName: 'Theacrine', dose: 200 },
+                { name: 'Kofein', shortName: 'Kofein', dose: 120 },
+                { name: 'Rhodiola rosea (rosavin)', shortName: 'Rhodiola', dose: 300 },
+                { name: 'CDP-Choline / Alpha GPC', shortName: 'Cholin', dose: 300 },
+                { name: 'L-Theanin', shortName: 'L-Theanin', dose: 200 },
+		{ name: '1 % Huperzinu A', shortName: 'Huperzin A', dose: 10 }, // Using average
+            ]
+        },
+        {
+            // Kapsle 4
+            idPrefix: 'capsule-3',
+            accentVariable: '--c4-accent',
+            palette: ['var(--c4-palette-0)', 'var(--c4-palette-1)', 'var(--c4-palette-2)', 'var(--c4-palette-3)', 'var(--c4-palette-4)', 'var(--c4-palette-5)'],
+            totalDose: 1000 + 500 + 200 + 35 + 250 + 10, // 1995 (B6 avg 35, Huperzin avg 10)
+            ingredients: [
+                { name: 'Taurin', shortName: 'Taurin', dose: 1000 },
+                { name: 'L-Tyrosin', shortName: 'L-Tyrosin', dose: 500 },
+                { name: 'DMAE / Centrophenoxin', shortName: 'DMAE', dose: 200 },
+                { name: 'Vitamín B6 (P-5-P)', shortName: 'Vit B6', dose: 35 }, // Using average
+                { name: 'Magnesium bisglycinát', shortName: 'Magnézium', dose: 250 }
+            ]
+        }
+    ];
+    
+    // Define palettes directly in JS, as CSS vars like var(--c1-palette-0) won't work directly in JS string concatenation for 'palette' array.
+    // Instead, we'll pull the actual color values from CSS custom properties.
+    const rootStyles = getComputedStyle(document.documentElement);
+    const palettes = {
+        '--c1-accent': ['#0d6efd', '#3da9fc', '#66bfff', '#99d6ff', '#cce8ff'], // Example values, should match CSS
+        '--c2-accent': ['#7b1fa2', '#9c27b0', '#ba68c8', '#ce93d8', '#e1bee7'],
+        '--c3-accent': ['#f57c00', '#ffa726', '#ffb74d', '#ffcc80', '#ffe0b2'],
+        '--c4-accent': ['#00897b', '#26a69a', '#4db6ac', '#80cbc4', '#b2dfdb', '#e0f2f1'] // Added one for 6th ingredient
+    };
+
+
+    const masterTooltip = document.getElementById('master-tooltip');
+
+    capsuleStore.forEach((capsule, capsuleIndex) => {
+        const graphicElement = document.getElementById(`graphic-${capsule.idPrefix}`);
+        const legendElement = document.getElementById(`legend-${capsule.idPrefix}`);
+        
+        if (!graphicElement || !legendElement) {
+            console.error(`Elementy pro ${capsule.idPrefix} nebyly nalezeny.`);
+            return;
+        }
+
+        // Get the correct palette for the current capsule
+        const currentPalette = palettes[capsule.accentVariable] || palettes['--c1-accent']; // Fallback to c1 palette
+
+        capsule.ingredients.forEach((ingredient, index) => {
+            const proportion = ingredient.dose / capsule.totalDose;
+            const segmentHeight = proportion * 100; // Percentage height
+
+            // Create segment for capsule graphic
+            const segment = document.createElement('div');
+            segment.classList.add('ingredient-segment');
+            segment.style.height = `${segmentHeight}%`;
+            segment.style.backgroundColor = currentPalette[index % currentPalette.length]; // Cycle through palette
+            
+            // Add subtle pattern or texture to segment
+            // segment.style.backgroundImage = `linear-gradient(45deg, rgba(255,255,255,0.05) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.05) 75%, transparent 75%, transparent)`;
+            // segment.style.backgroundSize = `20px 20px`;
+
+
+            segment.dataset.name = ingredient.name;
+            segment.dataset.dose = `${ingredient.dose} mg (${(proportion * 100).toFixed(1)}%)`;
+            graphicElement.appendChild(segment);
+
+            // Create legend item
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `
+                <span class="legend-color-dot" style="background-color: ${currentPalette[index % currentPalette.length]};"></span>
+                <span class="legend-ingredient-name">${ingredient.name}</span>
+                <span class="legend-dose">(${ingredient.dose}mg)</span>
+                <span class="legend-arrow" style="color: ${rootStyles.getPropertyValue(capsule.accentVariable).trim()};">➔</span>
+            `; // Using a text arrow for simplicity
+            legendElement.appendChild(listItem);
+            
+            // Tooltip events for segment
+            segment.addEventListener('mousemove', function(e) {
+                masterTooltip.innerHTML = `<strong>${this.dataset.name}</strong><br>${this.dataset.dose}`;
+                masterTooltip.classList.add('visible');
+                // Position tooltip near cursor
+                // Adjustments to keep it within viewport might be needed for production
+                let x = e.clientX + 15;
+                let y = e.clientY + 15;
+                if (x + masterTooltip.offsetWidth + 20 > window.innerWidth) {
+                    x = e.clientX - masterTooltip.offsetWidth - 15;
+                }
+                if (y + masterTooltip.offsetHeight + 20 > window.innerHeight) {
+                    y = e.clientY - masterTooltip.offsetHeight - 15;
+                }
+                masterTooltip.style.left = `${x}px`;
+                masterTooltip.style.top = `${y}px`;
+            });
+            segment.addEventListener('mouseleave', function() {
+                masterTooltip.classList.remove('visible');
+            });
+
+             // Highlight legend item on segment hover and vice-versa (optional enhancement)
+            segment.addEventListener('mouseenter', () => {
+                listItem.style.backgroundColor = colorMix(currentPalette[index % currentPalette.length], '#ffffff', 0.1); // Lighter highlight
+                listItem.style.fontWeight = 'bold';
+            });
+            segment.addEventListener('mouseleave', () => {
+                listItem.style.backgroundColor = 'transparent';
+                listItem.style.fontWeight = 'normal';
+            });
+             listItem.addEventListener('mouseenter', () => {
+                segment.style.filter = 'brightness(1.15) saturate(1.2)';
+                segment.style.transform = 'scale(1.03)';
+            });
+            listItem.addEventListener('mouseleave', () => {
+                segment.style.filter = 'none';
+                segment.style.transform = 'scale(1)';
+            });
+
+        });
+    });
+
+    // Helper function for color mixing (simplistic)
+    function colorMix(color1_hex, color2_hex, weight) {
+        // This is a placeholder. True hex color mixing is more complex.
+        // For demo, just returning a slightly modified version of color1 or a fixed highlight.
+        return `rgba(${parseInt(color1_hex.slice(1,3),16)}, ${parseInt(color1_hex.slice(3,5),16)}, ${parseInt(color1_hex.slice(5,7),16)}, 0.1)`;
+    }
+});
+    </script>
+</body>
+</html>
